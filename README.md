@@ -1,4 +1,4 @@
-## Webpack
+## Design Patterns
 
 ###  [Demo](https://evgladkiy.github.io/FrontCamp-design-patterns/dist/)
 
