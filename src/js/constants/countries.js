@@ -1,0 +1,26 @@
+const countries = {
+    ar: 'Argentina',
+    au: 'Australia',
+    br: 'Brazil',
+    ca: 'Canada',
+    cn: 'China',
+    de: 'Germany',
+    es: 'Spain',
+    fr: 'France',
+    gb: 'United Kingdom',
+    hk: 'Hong Kong',
+    ie: 'Ireland',
+    in: 'India',
+    is: 'Iceland',
+    it: 'Italy',
+    nl: 'Netherlands',
+    no: 'Norway',
+    pk: 'Pakistan',
+    ru: 'Russian Federation',
+    sa: 'Saudi Arabia',
+    sv: 'El Salvador',
+    us: 'United States of America',
+    za: 'South Africa',
+};
+
+export default countries;

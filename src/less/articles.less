@@ -1,0 +1,131 @@
+/* ===== articles styles ===== */
+
+.article {
+    margin-bottom: 20px;
+    background: #fff;
+}
+
+.article__img-container {
+    position: relative;
+    line-height: 0;
+}
+
+.article__img-wrapper {
+    display: inline-block;
+    width: 100%;
+    height: 0;
+    padding-bottom: 42.5%;
+    border-radius: 3px 3px 0 0;
+    line-height: 0;
+    overflow: hidden;
+}
+
+.article__img {
+    width: 100%;
+    height: auto;
+    margin-top: -10%;
+    -webkit-transition: all 1s ease;
+    -o-transition: all 1s ease-in;
+    transition: all 1s ease;
+}
+
+.article__img-wrapper:hover .article__img {
+    transform: scale(1.05);
+}
+
+.article__img-wrapper:hover::after  {
+    display: block;
+}
+
+.article__img-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.article__source {
+    position: absolute;
+    bottom: -10px;
+    left: 15px;
+    padding: 8px 10px;
+    border-radius: 3px;
+    background: #343f6a;
+    color: #fff;
+    font-size: 1.2rem;
+    line-height: 1rem;
+}
+
+.article__content-container {
+    padding: 30px 15px 25px 15px;
+}
+
+.article__title a {
+    color: #343f6a;
+    font-size: 1.4rem;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.8rem;
+}
+.article__title a:hover {
+    opacity: 0.85;
+}
+
+.article__published {
+    padding-top: 10px;
+    font-size: 1.2rem;
+    font-style: italic;
+}
+
+.article__description {
+    position: absolute;
+    top: 50%;
+    display: none;
+    padding: 0 40px;
+    color: #fff;
+    font-size: 2rem;
+    line-height: 24px;
+    z-index: 20;
+    transform: translateY(-50%);
+}
+
+.searchError {
+    font-size: 2.5rem;
+    text-align: center;
+}
+
+/* =====  @media min-width 640px styles ===== */
+
+@media screen and (min-width: 641px){
+    .article {
+        margin-bottom: 40px;
+    }
+
+    .article__img {
+        margin-top: -5%;
+    }
+
+    .article__content-container {
+        padding: 30px 40px 25px 40px;
+    }
+
+    .article__source {
+        left: 40px;
+    }
+
+    .article__title a {
+        font-size: 2.2rem;
+    }
+
+    .article__img-wrapper:hover  .article__description {
+        display: block;
+    }
+
+    .searchError {
+        font-size: 4rem;
+    }
+}

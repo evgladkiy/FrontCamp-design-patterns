@@ -1,0 +1,18 @@
+{
+    "presets": [
+      ["env", {
+        "targets": {
+          "ie":  "10",
+          "browsers": ["last 2 versions"]
+        }
+      }],
+  ],
+  "plugins": [
+      "syntax-dynamic-import",
+      ["transform-runtime", {
+          "polyfill": false,
+          "regenerator": true
+          }
+      ]
+  ]
+}
