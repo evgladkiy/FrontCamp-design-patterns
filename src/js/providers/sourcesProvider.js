@@ -3,6 +3,7 @@ import RequestService from './../services/requestService';
 import countries from './../constants/countries';
 import languages from './../constants/languages';
 
+// (sd): is it a singleton? is so, it's really a bad one
 let instance = null;
 
 export default class SourcesProvider extends RequestService {
@@ -53,6 +54,7 @@ export default class SourcesProvider extends RequestService {
         });
     }
 
+    // (sd): private fields start with underscore
     getSources() {
         return this.sources;
     }

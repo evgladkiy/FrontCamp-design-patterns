@@ -1,4 +1,6 @@
-export default function throttle(func, ms) {
+// (sd): export should not be default
+// checkout lodash version?
+export function throttle(func, ms) {
     let isThrottled = false;
     let savedArgs;
     let savedThis;

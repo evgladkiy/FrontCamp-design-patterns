@@ -4,12 +4,13 @@ import ArticlesProvider from './providers/articlesProvider';
 import SearchMarkupCreator from './creators/searchMarkupCreator';
 import SourcesProvider from './providers/sourcesProvider';
 
-import throttle from './services/helpers';
+import {throttle} from './services/helpers';
 
 export default class App {
     constructor(defaultSources) {
         this.defaultSources = defaultSources;
         this.sourcesProvider = new SourcesProvider();
+        this.sourcesProvider.sources = '2232';
         this.articlesCreator = new ArticlesCreator();
         this.errorCreator = new ErrorCreator();
         this.searchMarkupCreator = new SearchMarkupCreator();
@@ -25,10 +26,13 @@ export default class App {
     searchSuitableArticles(searchKey, searchValue) {
         const { articlesProvider, articlesContainer, body } = this;
 
+        // (sd): does this belong here?
         articlesContainer.innerHTML = '';
         body.className = 'with-spinner';
 
-        return articlesProvider.searchArticles(searchKey, searchValue)
+        return articlesProvider.searchArticles(searchKey, searchValue, (articles) => {
+
+        })
             .then(() => articlesProvider.getNextArticles())
             .catch(err => err.message);
     }
@@ -39,6 +43,7 @@ export default class App {
         if (typeof articles === 'string') {
             throw new Error(articles);
         } else if (articles !== undefined) {
+            // (sd): partial render responsibility?
             body.className = '';
             articlesCreator.renderArticles(articles, articlesContainer);
             return;
@@ -48,6 +53,8 @@ export default class App {
     }
 
     createNewArticles(searchKey, searchValue) {
+        // (sd): all fields are usually initialized either in constructor or in init method
+        // if it's a lazy init pattern, then it's suitable here
         this.articlesProvider = new ArticlesProvider();
         this.searchSuitableArticles(searchKey, searchValue)
             .then(articles => this.renderAtricles(articles))
@@ -86,6 +93,7 @@ export default class App {
         this.createSubmitErrors(inputsArr);
 
         if (!this.isSubmitForsmHasArrors) {
+            // (sd): all fields are usually initialized either in constructor or in init method
             this.articlesProvider = new ArticlesProvider();
             this.createNewArticles(this.radioButtonsValue, searchValue);
         }
@@ -103,12 +111,12 @@ export default class App {
         }
     }
 
-
     async scrollHandler() {
         if (!this.canGetNextArticles) {
             return;
         }
 
+        // (sd): went a little mad with destructuring
         const { body: { offsetHeight } } = this;
         const { documentElement: { scrollTop } } = document;
 
@@ -157,6 +165,7 @@ export default class App {
     async init() {
         const defaultSearchValue = `sources=${this.defaultSources.toString()}&`;
 
+        // (sd): return value?
         await this.sourcesProvider.init();
         await this.createNewArticles('sources', defaultSearchValue);
 

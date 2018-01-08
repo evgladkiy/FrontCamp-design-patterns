@@ -56,6 +56,7 @@ export default class ArticlesProvider extends RequestService {
 
         return super.getData(requestValue)
             .then(({ articles, totalResults }) => {
+            // (sd): maybe a good place for a strategy pattern?
                 const sortedArticles = this.sortArticlesByDate(articles);
                 this.articles.push(...sortedArticles);
                 this.totalResults = totalResults - this.filtredArticlesCount;
@@ -78,6 +79,7 @@ export default class ArticlesProvider extends RequestService {
     }
 
     async getNextArticles() {
+        // (sd): went a little mad with destructuring
         const {
             articles,
             numOfProvidedArticles,
