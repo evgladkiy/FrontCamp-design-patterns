@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>FrontCapm ES6 and Babel</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,500i,700&amp;subset=cyrillic" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body class="with-spinner">
+    <div class="main-container">
+        <form class="form" name="search-form">
+                <h2>Search news by newsapi</h2>
+                <div class="radios-container">
+                    <input id="queryRadio" type="radio" name="radio" value="q" checked>
+                    <label for="queryRadio">by query</label>
+                    <input id="categoriesRadio" type="radio" name="radio"  value="category">
+                    <label for="categoriesRadio">by categories</label>
+                    <input id="sourceRadio" type="radio" name="radio"  value="sources">
+                    <label for="sourceRadio">by source</label>
+                </div>
+                <div class="inputs-container"></div>
+            <button class="form__submit" type="submit">Search</button>
+        </form>
+        <div class="articles-container"></div>
+    </div>
+    <div class="spinner centred">
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
+    </div>
+    <a class="go-top" href="#">
+        <i class="fa fa-chevron-up" aria-hidden="true"></i>
+    </a>
+    <script src="./app.js"></script>
+</body>
+</html>
