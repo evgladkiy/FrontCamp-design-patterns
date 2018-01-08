@@ -1,5 +1,6 @@
 import SelectCreator from './selectCreator';
 import SourcesProvider from './../providers/sourcesProvider';
+
 import articlesSortTypes from './../constants/articlesSortTypes';
 
 export default class SearchMarkupCreator {
@@ -11,14 +12,13 @@ export default class SearchMarkupCreator {
 
     createSmallSelects(secondSelect) {
         const selectsContainer = document.createElement('div');
-        selectsContainer.className = 'selects__container';
-
         const languages = this.sourcesProvider.getLanguages();
         const languagesSelect = this.selectCreator.createSelect('language', languages);
-        selectsContainer.appendChild(languagesSelect);
-
         const countries = this.sourcesProvider.getCountries();
         const countriesSelect = this.selectCreator.createSelect('country', countries);
+
+        selectsContainer.className = 'selects__container';
+        selectsContainer.appendChild(languagesSelect);
 
         if (secondSelect) {
             selectsContainer.appendChild(secondSelect);
@@ -30,20 +30,21 @@ export default class SearchMarkupCreator {
     }
 
     renderQueryMarkup() {
+        const sortBySelect = this.selectCreator.createSelect('sortBy', articlesSortTypes, true);
+        const selectsContainer = this.createSmallSelects(sortBySelect);
+
         this.container.innerHTML = `
             <div class="search-type__container active">
                 <input class="form__input" id="q" type="search" name="q" placeholder="Keywords"/>
             </div
         `;
-
-        const sortBySelect = this.selectCreator.createSelect('sortBy', articlesSortTypes, true);
-        const selectsContainer = this.createSmallSelects(sortBySelect);
         this.container.appendChild(selectsContainer);
     }
 
     renderCategoriesMarkup() {
         const categories = this.sourcesProvider.getCategories();
         const categoriesSelect = this.selectCreator.createSelect('category', categories);
+
         this.container.appendChild(categoriesSelect);
         this.container.appendChild(this.createSmallSelects());
     }
@@ -55,6 +56,7 @@ export default class SearchMarkupCreator {
                 return acc;
             }, {});
         const sourcesSelect = this.selectCreator.createSelect('sources', sources);
+
         this.container.appendChild(sourcesSelect);
         this.container.appendChild(this.createSmallSelects());
     }

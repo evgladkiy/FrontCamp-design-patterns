@@ -3,18 +3,19 @@ import RequestService from './../services/requestService';
 export default class ArticlesProvider extends RequestService {
     constructor() {
         super();
+        this.articles = [];
         this.numOfProvidedArticles = 10;
         this.nextSearhPage = 1;
         this.numArticlesOnPage = 0;
-        this.articles = [];
         this.totalResults = 0;
+        this.filtredArticlesCount = 0;
         this.searchKey = null;
         this.searchValue = null;
-        this.filtredArticlesCount = 0;
     }
 
     sortArticlesByDate(articles) {
-        const filtredArticles = articles.filter(article => article.publishedAt !== null)
+        const filtredArticles = articles
+            .filter(article => article.publishedAt !== null)
             .map((article) => {
                 const { source: { name } } = article;
                 let { publishedAt, author } = article;
@@ -29,6 +30,7 @@ export default class ArticlesProvider extends RequestService {
             ));
 
         this.filtredArticlesCount += (articles.length - filtredArticles.length);
+
         return filtredArticles;
     }
 
@@ -51,6 +53,7 @@ export default class ArticlesProvider extends RequestService {
         this.searchKey = searchKey;
         this.searchValue = searchValue;
         const requestValue = this.getRequestValue(searchKey, searchValue);
+
         return super.getData(requestValue)
             .then(({ articles, totalResults }) => {
                 const sortedArticles = this.sortArticlesByDate(articles);
@@ -70,6 +73,7 @@ export default class ArticlesProvider extends RequestService {
             numArticlesOnPage,
         } = this;
         const endArrIndex = numArticlesOnPage + numOfProvidedArticles;
+
         return articles.slice(numArticlesOnPage, endArrIndex);
     }
 
@@ -107,6 +111,7 @@ export default class ArticlesProvider extends RequestService {
                 nextArticles = articles.slice(numArticlesOnPage);
             }
         }
+
         this.numArticlesOnPage += nextArticles.length;
 
         return nextArticles;

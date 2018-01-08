@@ -1,8 +1,7 @@
 import ArticlesCreator from './creators/articlesCreator';
-import ArticlesProvider from './providers/articlesProvider';
 import ErrorCreator from './creators/errorsCreator';
+import ArticlesProvider from './providers/articlesProvider';
 import SearchMarkupCreator from './creators/searchMarkupCreator';
-
 import SourcesProvider from './providers/sourcesProvider';
 
 import throttle from './services/helpers';
@@ -36,6 +35,7 @@ export default class App {
 
     renderAtricles(articles) {
         const { articlesCreator, articlesContainer, body } = this;
+
         if (typeof articles === 'string') {
             throw new Error(articles);
         } else if (articles !== undefined) {
@@ -129,6 +129,7 @@ export default class App {
     onChangeRadioHandler(e) {
         const { target } = e;
         const { radioButtonsValue } = this;
+
         if (target.type === 'radio' && target.value !== radioButtonsValue) {
             this.radioButtonsValue = target.value;
             this.searchMarkupCreator.renderMarkupByRadioValue(this.radioButtonsValue);

@@ -7,6 +7,7 @@ export default class SelectCreator {
 
     createSelect(selectName, optionsObj, isDisabledDefaultOption) {
         const select = document.createElement('select');
+
         select.setAttribute('id', selectName);
         select.setAttribute('name', selectName);
         select.className = 'form__input';
@@ -24,6 +25,7 @@ export default class SelectCreator {
 
         select.innerHTML = options.reduce((acc, option) => {
             const html = acc + this.getOptionTmpl(option, optionsObj[option]);
+
             return html;
         }, optionsHtml);
 
