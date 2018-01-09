@@ -1,5 +1,5 @@
 import SelectCreator from './selectCreator';
-import SourcesProvider from './../providers/sourcesProvider';
+import sourcesProvider from './../providers/sourcesProvider';
 
 import articlesSortTypes from './../constants/articlesSortTypes';
 
@@ -7,7 +7,7 @@ export default class SearchMarkupCreator {
     constructor() {
         this.container = document.querySelector('.inputs-container');
         this.selectCreator = new SelectCreator();
-        this.sourcesProvider = new SourcesProvider();
+        this.sourcesProvider = sourcesProvider;
     }
 
     createSmallSelects(secondSelect) {

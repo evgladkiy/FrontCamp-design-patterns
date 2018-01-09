@@ -29,6 +29,7 @@
   "author": "Yauheni Hladki",
   "license": "ISC",
   "dependencies": {
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-runtime": "^6.26.0",
     "clean-webpack-plugin": "^0.1.17",
     "copy-webpack-plugin": "^4.2.3",
