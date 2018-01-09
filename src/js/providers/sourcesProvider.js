@@ -3,27 +3,24 @@ import RequestService from './../services/requestService';
 import countries from './../constants/countries';
 import languages from './../constants/languages';
 
-let instance = null;
-
-export default class SourcesProvider extends RequestService {
+class SourcesProvider extends RequestService {
     constructor() {
         super();
-        if (!instance) {
-            instance = this;
+        if (!SourcesProvider.instance) {
+            this._sources = null;
+            this._srcLanguages = {};
+            this._srcCountries = {};
+            this._srcCategories = {};
+            SourcesProvider.instance = this;
         }
 
-        this.sources = null;
-        this.srcLanguages = {};
-        this.srcCountries = {};
-        this.srcCategories = {};
-
-        return instance;
+        return SourcesProvider.instance;
     }
 
-    getSourcesFromApi() {
+    getArticleSources() {
         return super.getData('sources?')
             .then(({ sources }) => {
-                this.sources = sources;
+                this._sources = sources;
                 this.collectSourcesProps(sources);
             });
     }
@@ -31,45 +28,45 @@ export default class SourcesProvider extends RequestService {
     collectSourcesProps(sources) {
         sources.forEach((source) => {
             const { language: langCode, country: countryCode, category } = source;
-            const { srcLanguages, srcCountries, srcCategories } = this;
+            const { _srcLanguages, _srcCountries, _srcCategories } = this;
 
-            if (srcLanguages[langCode] === undefined
+            if (_srcLanguages[langCode] === undefined
              && languages[langCode] !== undefined) {
-                srcLanguages[langCode] = languages[langCode];
+                _srcLanguages[langCode] = languages[langCode];
             }
 
-            if (srcCountries[countryCode] === undefined
+            if (_srcCountries[countryCode] === undefined
              && countries[countryCode] !== undefined) {
-                srcCountries[countryCode] = countries[countryCode];
+                _srcCountries[countryCode] = countries[countryCode];
             }
 
-            if (srcCategories[category] === undefined) {
+            if (_srcCategories[category] === undefined) {
                 const categoryNameForSelect =
                     `${category[0].toUpperCase()}${category.slice(1)}`
                         .split('-').join(' ');
 
-                srcCategories[category] = categoryNameForSelect;
+                _srcCategories[category] = categoryNameForSelect;
             }
         });
     }
 
     getSources() {
-        return this.sources;
+        return this._sources;
     }
 
     getLanguages() {
-        return this.srcLanguages;
+        return this._srcLanguages;
     }
 
     getCountries() {
-        return this.srcCountries;
+        return this._srcCountries;
     }
 
     getCategories() {
-        return this.srcCategories;
-    }
-
-    init() {
-        return this.getSourcesFromApi();
+        return this._srcCategories;
     }
 }
+
+const sourcesProvider = new SourcesProvider();
+
+export default sourcesProvider;

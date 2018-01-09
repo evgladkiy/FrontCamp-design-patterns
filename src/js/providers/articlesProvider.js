@@ -9,11 +9,18 @@ export default class ArticlesProvider extends RequestService {
         this.numArticlesOnPage = 0;
         this.totalResults = 0;
         this.filtredArticlesCount = 0;
-        this.searchKey = null;
-        this.searchValue = null;
+        this.searchParams = null;
     }
 
-    sortArticlesByDate(articles) {
+    reset() {
+        this.articles = [];
+        this.nextSearhPage = 1;
+        this.numArticlesOnPage = 0;
+        this.totalResults = 0;
+        this.filtredArticlesCount = 0;
+    }
+
+    filterArtiles(articles) {
         const filtredArticles = articles
             .filter(article => article.publishedAt !== null)
             .map((article) => {
@@ -24,10 +31,7 @@ export default class ArticlesProvider extends RequestService {
                 publishedAt = new Date(publishedAt);
 
                 return Object.assign(article, { publishedAt, author });
-            })
-            .sort((articleB, articleA) => (
-                Number(articleA.publishedAt) - Number(articleB.publishedAt)
-            ));
+            });
 
         this.filtredArticlesCount += (articles.length - filtredArticles.length);
 
@@ -49,16 +53,20 @@ export default class ArticlesProvider extends RequestService {
         }
     }
 
-    searchArticles(searchKey, searchValue) {
-        this.searchKey = searchKey;
-        this.searchValue = searchValue;
+    searchArticlesBy(searchKey, searchValue, sortFunc) {
         const requestValue = this.getRequestValue(searchKey, searchValue);
+
+        if (this.searchParams === null) {
+            this.searchParams = [...arguments];
+        }
 
         return super.getData(requestValue)
             .then(({ articles, totalResults }) => {
-                const sortedArticles = this.sortArticlesByDate(articles);
+                const sortedArticles = sortFunc(this.filterArtiles(articles));
+
                 this.articles.push(...sortedArticles);
                 this.totalResults = totalResults - this.filtredArticlesCount;
+
                 return this.articles;
             })
             .catch(() => {
@@ -67,27 +75,18 @@ export default class ArticlesProvider extends RequestService {
     }
 
     getNextMiddleArticles() {
-        const {
-            articles,
-            numOfProvidedArticles,
-            numArticlesOnPage,
-        } = this;
+        const { numOfProvidedArticles, numArticlesOnPage } = this;
         const endArrIndex = numArticlesOnPage + numOfProvidedArticles;
 
-        return articles.slice(numArticlesOnPage, endArrIndex);
+        return this.articles.slice(numArticlesOnPage, endArrIndex);
     }
 
     async getNextArticles() {
-        const {
-            articles,
-            numOfProvidedArticles,
-            numArticlesOnPage,
-            totalResults,
-        } = this;
+        const { articles, numOfProvidedArticles, numArticlesOnPage } = this;
         const articlesAmount = articles.length;
         let nextArticles = [];
 
-        if (totalResults <= this.numArticlesOnPage) {
+        if (this.totalResults <= this.numArticlesOnPage) {
             return;
         }
 
@@ -101,11 +100,11 @@ export default class ArticlesProvider extends RequestService {
             }
         } else {
             if (articlesAmount < numArticlesOnPage + numOfProvidedArticles) {
-                await this.searchArticles(this.searchKey, this.searchValue);
+                await this.searchArticlesBy(...this.searchParams);
             }
             if (numArticlesOnPage === 0) {
                 nextArticles = articles.slice(0, numOfProvidedArticles);
-            } else if (totalResults >= numArticlesOnPage + numOfProvidedArticles) {
+            } else if (this.totalResults >= numArticlesOnPage + numOfProvidedArticles) {
                 nextArticles = this.getNextMiddleArticles();
             } else {
                 nextArticles = articles.slice(numArticlesOnPage);
